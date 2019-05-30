@@ -83,6 +83,13 @@ class Graph(object):
         return [vertex for vertex in graph if not graph[vertex]]
 
     def find_path(self, start_vertex, end_vertex, path=[]):
+        if self.__graph_dict != None:
+            # separate self._find_path(start_vertex, end_vertex, path=[])
+            # because of recursion
+            return self._find_path(start_vertex, end_vertex, path=[])
+        return None
+
+    def _find_path(self, start_vertex, end_vertex, path):
         """
         Return a path (list of vertices/nodes)
         from where they start to where they end
@@ -101,12 +108,11 @@ class Graph(object):
         for vertex in graph[start_vertex]:
             if vertex not in path:
                 # start find from this vertex itself
-                extended_path = self.find_path(vertex, end_vertex, path)
-                if extended_path:
-                    return extended_path
+                path += self.find_path(vertex, end_vertex, path)
 
-        return None
+        return path
 
+    # still buggy
     def find_all_paths(self, start_vertex, end_vertex, path=[]):
         """Return a list of all paths from start_vertex to end_vertex"""
 
@@ -146,13 +152,14 @@ def generate_graph_dict(data):
 questions = input_file.read().splitlines()
 data = data_csv.read().splitlines()
 network = Graph(generate_graph_dict(data))
-print(network.__str__())
-# print(network.find_all_paths('Abel', None, []))
 
 
-def str_from_list(x_list):
+def str_from_list(x_list, exclude=None):
     if not x_list:
         return None
+
+    if exclude:
+        x_list.remove(exclude)
     return ','.join(x_list)
 
 
@@ -160,8 +167,9 @@ for j in questions:
     j_list = j.split('(')
     child = j_list[1].split(')')[0]
     if j_list[0] == 'ancestors':
-        x = []  # get ancestors from graph
-        output_file.write('{}\n'.format(str_from_list(x)))
+        ancestors = network.find_path(child, None, [])
+        ancestors.sort()
+        output_file.write('{}\n'.format(str_from_list(ancestors, child)))
 
 output_file.close()
 input_file.close()
