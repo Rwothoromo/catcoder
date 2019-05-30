@@ -5,7 +5,6 @@ input_file = open(args[1], 'r')
 output_file = open(args[2], 'w')
 data_csv = open('social_network.txt', 'r')
 output = []
-network = {}
 
 
 class Graph(object):
@@ -122,15 +121,33 @@ class Graph(object):
 
         # loop through the list of vertices connected to start_vertex
         # and collect the paths therein
-        return [path for path in self.find_all_paths(vertex, end_vertex, path)
-                for vertex in graph[start_vertex] if vertex not in path]
+        return [path for vertex in graph[start_vertex] if vertex not in path
+                for path in self.find_all_paths(vertex, end_vertex, path)]
+
+
+def generate_graph_dict(data):
+    graph_dict = {}
+    for i in data:
+        i_list = i.split(',')
+        child = i_list[0] if i_list[0] != '' else None
+        father = i_list[1] if i_list[1] != '' else None
+        mother = i_list[2] if i_list[2] != '' else None
+
+        if child:
+            parents = []
+            if father:
+                parents.append(father)
+            if mother:
+                parents.append(mother)
+            graph_dict[child] = parents
+    return graph_dict
 
 
 questions = input_file.read().splitlines()
 data = data_csv.read().splitlines()
-for i in data:
-    i_list = i.split(',')
-    network[i_list[0]] = i_list[1:]
+network = Graph(generate_graph_dict(data))
+print(network.__str__())
+# print(network.find_all_paths('Abel', None, []))
 
 
 def str_from_list(x_list):
