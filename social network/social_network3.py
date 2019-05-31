@@ -61,12 +61,15 @@ def cousins(network, child):
 for j in questions:
     j_list = j.split('(')
     child = j_list[1].split(')')[0]
+
     if j_list[0] == 'ancestors':
         x = ancestors(network, child)
         output_file.write('{}\n'.format(str_from_list(x)))
+
     if j_list[0] == 'descendants':
         x = descendants(network, child)
         output_file.write('{}\n'.format(str_from_list(x)))
+
     if j_list[0] == 'cousins':
         x = cousins(network, child)
         output_file.write('{}\n'.format(str_from_list(x)))

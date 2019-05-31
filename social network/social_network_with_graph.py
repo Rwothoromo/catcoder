@@ -166,10 +166,16 @@ def str_from_list(x_list, exclude=None):
 for j in questions:
     j_list = j.split('(')
     child = j_list[1].split(')')[0]
+
     if j_list[0] == 'ancestors':
         ancestors = network.find_path(child, None, [])
         ancestors.sort()
         output_file.write('{}\n'.format(str_from_list(ancestors, child)))
+
+    if j_list[0] == 'descendants':
+        descendants = []
+        descendants.sort()
+        output_file.write('{}\n'.format(str_from_list(descendants, child)))
 
 output_file.close()
 input_file.close()
