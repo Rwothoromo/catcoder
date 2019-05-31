@@ -130,6 +130,20 @@ class Graph(object):
         return [path for vertex in graph[start_vertex] if vertex not in path
                 for path in self.find_all_paths(vertex, end_vertex, path)]
 
+    def descendants(self, parent):
+        if self.__graph_dict != None:
+            # separate self._descendants(parent) because of recursion
+            children = self._descendants(parent)
+            for child in children:
+                children += self._descendants(child)
+            return children
+        return None
+
+    def _descendants(self, parent):
+        """Return every child who has parent in their value"""
+
+        return [key for key, value in self.__graph_dict.items() if parent in value]
+
 
 def generate_graph_dict(data):
     graph_dict = {}
@@ -173,7 +187,7 @@ for j in questions:
         output_file.write('{}\n'.format(str_from_list(ancestors, child)))
 
     if j_list[0] == 'descendants':
-        descendants = []
+        descendants = network.descendants(child)
         descendants.sort()
         output_file.write('{}\n'.format(str_from_list(descendants, child)))
 
