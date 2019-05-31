@@ -158,7 +158,7 @@ def str_from_list(x_list, exclude=None):
     if not x_list:
         return None
 
-    if exclude:
+    if exclude in x_list:
         x_list.remove(exclude)
     return ','.join(x_list)
 

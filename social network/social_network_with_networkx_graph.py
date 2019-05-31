@@ -12,7 +12,7 @@ def str_from_list(x_list, exclude=None):
     if not x_list:
         return None
 
-    if exclude:
+    if exclude in x_list:
         x_list.remove(exclude)
     return ','.join(x_list)
 
@@ -50,11 +50,20 @@ graph = populate_nx_graph(graph, data)
 for j in questions:
     j_list = j.split('(')
     child = j_list[1].split(')')[0]
+
     if j_list[0] == 'ancestors':
-        ancestors = nx.shortest_path(graph, child, target=None)
-        x_list = [i for i in ancestors]  # get ancestors from graph
+        # Return all nodes reachable from \(source\) in G.
+        ancestors = nx.descendants(graph, child)
+        x_list = list(ancestors)
         x_list.sort()
-        output_file.write('{}\n'.format(str_from_list(x_list, 'Abel')))
+        output_file.write('{}\n'.format(str_from_list(x_list, child)))
+
+    if j_list[0] == 'descendants':
+        # Return all nodes having a path to \(source\) in G.
+        descendants = nx.ancestors(graph, child)
+        x_list = list(descendants)
+        x_list.sort()
+        output_file.write('{}\n'.format(str_from_list(x_list, child)))
 
 output_file.close()
 input_file.close()
