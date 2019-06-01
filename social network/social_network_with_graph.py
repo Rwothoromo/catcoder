@@ -108,7 +108,7 @@ class Graph(object):
         for vertex in graph[start_vertex]:
             if vertex not in path:
                 # start find from this vertex itself
-                path += self.find_path(vertex, end_vertex, path)
+                path += self._find_path(vertex, end_vertex, path)
 
         return path
 
@@ -128,7 +128,7 @@ class Graph(object):
         # loop through the list of vertices connected to start_vertex
         # and collect the paths therein
         return [path for vertex in graph[start_vertex] if vertex not in path
-                for path in self.find_all_paths(vertex, end_vertex, path)]
+                for path in self._find_all_paths(vertex, end_vertex, path)]
 
     def descendants(self, parent):
         if self.__graph_dict != None:
