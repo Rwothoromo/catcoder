@@ -19,6 +19,6 @@ Code storage for my past Catalyst Coding Contests attempts
 ## Run the programs
 
 * To test the social network implementations, `cd` into the `social network` folder
-* Run `python social_network_with_graph.py level1/level1_1.in level1/level1_1.out
+* Run `python social_network_with_graph.py level1/level1_1.in level1/level1_1.out`
 * Compare by running the same command with `social_network_with_networkx_graph.py` and `social_network3.py`
-* Follow a similar command patterrn to run `tower wars`
+* Follow a similar command patterrn to run the rest.
